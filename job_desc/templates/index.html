@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Job Description Generator</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <h1>취준생용 Job Description 생성기</h1>
+    <!-- <p><img src="/static/images/job_/img.png" alt="직업설명"></p> -->
+
+    <form id="jobForm" action="/generate" method="post">
+        <label>직군</label>
+        <input type="text" name="job_role" placeholder="예: 데이터 분석가" required>
+
+        <label>숙련도</label>
+        <input type="text" name="level" placeholder="예: 신입 / 주니어 / 시니어" required>
+
+        <button type="submit" id="submitBtn">생성하기</button>
+    </form>
+    <!-- 로딩 애니메이션 -->
+    <div id="loading" class="loading-container" style="display:none;">
+        <div class="spinner"></div>
+        <p>AI가 직무 설명을 생성 중입니다...</p>
+    </div>
+    <!-- 한꺼번에 결과출력 -->
+    {# 이 부분은 Jinja 주석입니다 
+    {% if result %}
+        <h2>결과</h2>
+        <pre id="result">
+        {{ result | safe }}
+        </pre>
+    {% endif %}
+    #}
+    <!-- 각 항목별로 결과 출력  -->
+    {% if result %}
+    <div class="job-card">
+        <h2>{{ result.job_role }} ({{ result.level }})</h2>
+
+        <section>
+            <h3>핵심 기술 역량</h3>
+            <ul>
+            {% for skill in result.core_skills %}
+                <li>{{ skill }}</li>
+            {% endfor %}
+            </ul>
+        </section>
+
+        <section>
+            <h3>필수 도구 및 기술 스택</h3>
+            <ul>
+            {% for tool in result.tools %}
+                <li>{{ tool }}</li>
+            {% endfor %}
+            </ul>
+        </section>
+
+        <section>
+            <h3>비기술 역량</h3>
+            <ul>
+            {% for soft in result.soft_skills %}
+                <li>{{ soft }}</li>
+            {% endfor %}
+            </ul>
+        </section>
+
+        <section>
+            <h3>직무 상세 설명</h3>
+            <p>{{ result.describe }}</p>
+        </section>
+    </div>
+    {% endif %}
+
+
+
+<script>
+    const form = document.getElementById("jobForm");
+    const loading = document.getElementById("loading");
+    const submitBtn = document.getElementById("submitBtn");
+
+    form.addEventListener("submit", () => {
+        // 로딩 표시
+        loading.style.display = "flex";
+
+        // 중복 제출 방지
+        submitBtn.disabled = true;
+    });
+</script>
+
+</body>
+</html>
