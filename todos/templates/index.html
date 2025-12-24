@@ -1,12 +1,32 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <h1>{{todos}}</h1>
-    <h2>{{title}}</h2>
-</body>
-</html>
+{% extends 'base.html' %}
+<!-- 자식 탬플릿에서 수정할 수 있는 부분-->
+{% block content %}
+ 
+    <main>
+        <a href="/"><p class="head_img"></p></a>
+        <h4>나를 성장시키는 메모</h4>
+        <br>
+        <form action="/add" method="post">
+            <!-- <textarea name="task" rows="5" placeholder="Enter your task" id="task" required></textarea> -->
+            <textarea name="task" rows="5" placeholder="Enter your task" id="task"></textarea>
+            <button type="submit" id="add_task">
+            Add
+            </button>
+        </form>
+	
+	    <br>
+	    <h2>Tasks</h2>
+	
+	    <div>
+            {% for todo in todos %}
+            <div class="task">
+                <strike>{{todo.task}}</strike>
+	                <small>
+	                    <a href="">Edit</a>
+	                    <a href="">Delete</a>
+	                </small>
+	        </div>
+        {% endfor %}
+	    </div>
+    </main>
+{% endblock content %}
